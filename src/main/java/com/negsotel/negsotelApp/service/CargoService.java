@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class CargoService implements CargoRepositoryß{
+public class CargoService {
     @Autowired
     CargoRepository cargoRepository;
 
