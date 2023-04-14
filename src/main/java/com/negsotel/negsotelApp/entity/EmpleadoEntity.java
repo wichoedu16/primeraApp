@@ -3,7 +3,6 @@ package com.negsotel.negsotelApp.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 public class EmpleadoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "empleado-sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "empleado-sequence")
     private Long id;
 
     @Column(name = "cedula", nullable = false, unique = true)
@@ -107,6 +106,7 @@ public class EmpleadoEntity {
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
     @ManyToOne
-    @JoinColumn(name = "cargo_id")
+    @JoinColumn(name = "cargo_id", insertable = false, updatable = false)
     private CargoEntity cargo;
+
 }

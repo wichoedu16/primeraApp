@@ -1,16 +1,14 @@
 package com.negsotel.negsotelApp.controller;
 
 import com.negsotel.negsotelApp.entity.CargoEntity;
-import com.negsotel.negsotelApp.entity.DepartamentoEntity;
-import com.negsotel.negsotelApp.repository.CargoRepository;
-import com.negsotel.negsotelApp.repository.DepartamentoRepository;
 import com.negsotel.negsotelApp.service.CargoService;
 
-import java.time.LocalDateTime;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
-import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,41 +19,43 @@ import org.springframework.web.bind.annotation.*;
 public class CargoController {
 
     @Autowired
-    private CargoRepository cargoRepository;
-    private DepartamentoRepository departamentoRepository;
     private CargoService cargoService;
-
     @GetMapping("/cargos")
-    ResponseEntity<List<CargoEntity>> getAll(){
-        List<CargoEntity> cargos = cargoRepository.findAll();
-        return new ResponseEntity<>(cargos, HttpStatus.OK);
+    public ResponseEntity<Page<CargoEntity>> getAll(Pageable pageable) {
+        Page<CargoEntity> cargos = cargoService.getAll(pageable);
+        return ResponseEntity.ok(cargos);
+    }
+
+    @GetMapping("/departamento/{idDepartamento}")
+    ResponseEntity<List<CargoEntity>> getByDepartamentoId(@PathVariable Long idDepartamento){
+        List<CargoEntity> cargos = cargoService.geByDepartamentoId(idDepartamento);
+        return new ResponseEntity<>(cargos, HttpStatus.FOUND);
     }
 
     @GetMapping("/cargos/{id}")
-    CargoEntity getCargoById(@PathVariable Long id) {
-        return cargoRepository.findById(id).orElse(null);
+    ResponseEntity<CargoEntity> getCargoById(@PathVariable Long id) {
+        CargoEntity cargo = cargoService.getById(id);
+        return new ResponseEntity<>(cargo, HttpStatus.FOUND);
     }
 
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Creado exitosamente")
     @PostMapping("/cargos")
-    CargoEntity create(@RequestBody CargoEntity cargo){
-        cargo.setFechaCreacion(LocalDateTime.now());
-        DepartamentoEntity departamento = departamentoRepository.findById(cargo.getDepartamento().getId()).orElse(null);
-        cargo.setDepartamento(departamento);
-        return cargoRepository.save(cargo);
+    public ResponseEntity<CargoEntity> crearCargo(@RequestBody CargoEntity cargo) {
+        CargoEntity cargoGuardado = cargoService.createCargo(cargo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cargoGuardado);
     }
 
     @ResponseStatus(value = HttpStatus.OK, reason = "Actualizado exitosamente")
     @PutMapping("/cargos/{id}")
-    void update(@PathVariable Long id, @RequestBody CargoEntity cargo) {
-        cargo.setId(id);
-        cargo.setFechaModifica(LocalDateTime.now());
-        cargoRepository.save(cargo);
+    public ResponseEntity<CargoEntity> actualizarCargo(@PathVariable Long id, @RequestBody CargoEntity cargo) {
+        CargoEntity cargoEditado = cargoService.updateCargo(id, cargo);
+        return ResponseEntity.status(HttpStatus.OK).body(cargoEditado);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/cargos/{id}")
     void delete(@PathVariable Long id){
-        cargoRepository.deleteById(id);
+        cargoService.deleteCargo(id);
     }
+
 }

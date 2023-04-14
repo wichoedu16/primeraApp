@@ -1,53 +1,53 @@
 package com.negsotel.negsotelApp.controller;
 
 import com.negsotel.negsotelApp.entity.DepartamentoEntity;
-import com.negsotel.negsotelApp.repository.DepartamentoRepository;
+import com.negsotel.negsotelApp.service.DepartamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/departamento-admin")
+@RequestMapping("/departamento-admin/departamentos")
 public class DepartamentoController {
 
-
     @Autowired
-    private DepartamentoRepository departamentoRepository;
-
-    @GetMapping("/departamentos")
-    ResponseEntity<List<DepartamentoEntity>> getAll(){
-        List<DepartamentoEntity> departamentos = departamentoRepository.findAll();
-        return new ResponseEntity<>(departamentos, HttpStatus.OK);
+    private DepartamentoService departamentoService;
+    @GetMapping("")
+    public ResponseEntity<Page<DepartamentoEntity>> getAll(Pageable pageable) {
+        Page<DepartamentoEntity> departamentos = departamentoService.getAll(pageable);
+        return ResponseEntity.ok(departamentos);
     }
 
-    @GetMapping("/departamentos/{id}")
-    DepartamentoEntity getById(@PathVariable Long id) {
-        return departamentoRepository.findById(id).orElse(null);
+    @GetMapping("/{id}")
+    ResponseEntity<DepartamentoEntity> getByDepartamentoId(@PathVariable Long id){
+        DepartamentoEntity departamento = departamentoService.getById(id);
+        return new ResponseEntity<>(departamento, HttpStatus.FOUND);
     }
 
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Creado exitosamente")
-    @PostMapping("/departamentos")
-    DepartamentoEntity create(@RequestBody DepartamentoEntity departamento){
-        departamento.setFechaCreacion(LocalDateTime.now());
-        return departamentoRepository.save(departamento);
+    @PostMapping("")
+    public ResponseEntity<DepartamentoEntity> crear(@RequestBody DepartamentoEntity departamento) {
+        DepartamentoEntity departamentoGuardado = departamentoService.createDepartamento(departamento);
+        return ResponseEntity.status(HttpStatus.CREATED).body(departamentoGuardado);
     }
 
     @ResponseStatus(value = HttpStatus.OK, reason = "Actualizado exitosamente")
-    @PutMapping("/departamentos/{id}")
-    void update(@PathVariable Long id, @RequestBody DepartamentoEntity departamento) {
-        departamento.setId(id);
-        departamento.setFechaModifica(LocalDateTime.now());
-        departamentoRepository.save(departamento);
+    @PutMapping("/{id}")
+    public ResponseEntity<DepartamentoEntity> actualizar(@PathVariable Long id, @RequestBody DepartamentoEntity departamento) {
+        DepartamentoEntity departamentoEditado = departamentoService.updateDepartamento(id, departamento);
+        return ResponseEntity.status(HttpStatus.OK).body(departamentoEditado);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/departamentos/{id}")
+    @DeleteMapping("/{id}")
     void delete(@PathVariable Long id){
-        departamentoRepository.deleteById(id);
+        departamentoService.deleteDepartamento(id);
     }
+
 }

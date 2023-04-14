@@ -19,14 +19,16 @@ public class AnticipoEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "anticipo-sequence")
     private Long id;
     private @Column(nullable = false)
-    String descripcion;
+    String motivo;
+    private @Column(nullable = false)
+    String estado;
     @Column(unique = true, nullable = false)
     private Double monto;
     private LocalDateTime fechaPedido;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModifica;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "empleado_id")
+    @JoinColumn(name = "empleado_id", insertable = false, updatable = false)
     private EmpleadoEntity empleado;
 
 }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,7 +17,7 @@ import java.util.List;
 @Table(name="departamento")
 public class DepartamentoEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "departamento-sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "departamento-sequence")
     private Long id;
     @NonNull
     private String descripcion;
@@ -24,6 +25,5 @@ public class DepartamentoEntity {
     private String codigo;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModifica;
-    @OneToMany(mappedBy = "departamento")
-    private List<CargoEntity> cargos;
+
 }

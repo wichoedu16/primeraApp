@@ -29,8 +29,8 @@ public class CargoEntity {
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModifica;
     @ManyToOne
-    @JoinColumn(name = "departamentoId")
+    @JoinColumn(name = "departamento_id")
     private DepartamentoEntity departamento;
-    @OneToMany(mappedBy = "cargo")
-    private List<EmpleadoEntity> empleados;
+    @Column(name = "departamento_id", insertable = false, updatable = false)
+    private Long departamentoId;
 }
