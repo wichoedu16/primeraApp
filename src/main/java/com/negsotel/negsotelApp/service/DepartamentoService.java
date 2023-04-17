@@ -21,8 +21,10 @@ public class DepartamentoService {
     @Autowired
     private DepartamentoRepository departamentoRepository;
 
-    public Page<DepartamentoEntity> getAll(Pageable pageable) {
-        return departamentoRepository.findAll(pageable);
+    private CargoService cargoService;
+
+    public List<DepartamentoEntity> getAll() {
+        return departamentoRepository.findAll();
     }
 
     public DepartamentoEntity getById(Long id) {
@@ -45,18 +47,16 @@ public class DepartamentoService {
     public DepartamentoEntity createDepartamento(DepartamentoEntity departamento) {
         validarCodigoDepartamento(departamento.getCodigo());
         departamento.setFechaCreacion(LocalDateTime.now());
-        departamentoRepository.save(departamento);
-        return departamento;
+        return departamentoRepository.save(departamento);
     }
 
     public DepartamentoEntity updateDepartamento(Long id, DepartamentoEntity departamento) {
         Optional<DepartamentoEntity> departamentoEncontrado = getDepartamentoById(id);
         if (departamentoEncontrado.isPresent()) {
-            validarCodigoDepartamento(departamento.getCodigo());
             departamentoEncontrado.get().setFechaModifica(LocalDateTime.now());
             departamentoEncontrado.get().setDescripcion(departamento.getDescripcion());
             departamentoEncontrado.get().setCodigo(departamento.getCodigo());
-            return departamentoEncontrado.get();
+            return departamentoRepository.save(departamentoEncontrado.get());
         } else {
             throw new EntityNotFoundException("No se encontró el departamento con ID " + departamento.getId());
         }
@@ -76,5 +76,9 @@ public class DepartamentoService {
         if (Objects.nonNull(departamento)){
             throw new EntityExistsException("El cargo ya existe para el código: " + departamento.getDescripcion());
         }
+    }
+
+    public List<CargoEntity> getCargosByDepartamento(Long id) {
+        return cargoService.geByDepartamentoId(id);
     }
 }

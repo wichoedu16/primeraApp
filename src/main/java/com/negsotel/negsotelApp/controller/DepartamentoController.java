@@ -1,6 +1,8 @@
 package com.negsotel.negsotelApp.controller;
 
+import com.negsotel.negsotelApp.entity.CargoEntity;
 import com.negsotel.negsotelApp.entity.DepartamentoEntity;
+import com.negsotel.negsotelApp.service.CargoService;
 import com.negsotel.negsotelApp.service.DepartamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,16 +20,24 @@ public class DepartamentoController {
 
     @Autowired
     private DepartamentoService departamentoService;
+    @Autowired
+    private CargoService cargoService;
     @GetMapping("")
-    public ResponseEntity<Page<DepartamentoEntity>> getAll(Pageable pageable) {
-        Page<DepartamentoEntity> departamentos = departamentoService.getAll(pageable);
+    public ResponseEntity<List<DepartamentoEntity>> getAll() {
+        List<DepartamentoEntity> departamentos = departamentoService.getAll();
         return ResponseEntity.ok(departamentos);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<DepartamentoEntity> getByDepartamentoId(@PathVariable Long id){
         DepartamentoEntity departamento = departamentoService.getById(id);
-        return new ResponseEntity<>(departamento, HttpStatus.FOUND);
+        return ResponseEntity.ok(departamento);
+    }
+
+    @GetMapping("/{id}/cargos")
+    ResponseEntity<List<CargoEntity>> getCargosPorDepartamento(@PathVariable Long id){
+        List<CargoEntity> cargos = cargoService.geByDepartamentoId(id);
+        return ResponseEntity.ok(cargos);
     }
 
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Creado exitosamente")

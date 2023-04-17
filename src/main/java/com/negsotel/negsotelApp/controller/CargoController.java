@@ -21,12 +21,12 @@ public class CargoController {
     @Autowired
     private CargoService cargoService;
     @GetMapping("/cargos")
-    public ResponseEntity<Page<CargoEntity>> getAll(Pageable pageable) {
-        Page<CargoEntity> cargos = cargoService.getAll(pageable);
+    public ResponseEntity<List<CargoEntity>> getAll() {
+        List<CargoEntity> cargos = cargoService.getAll();
         return ResponseEntity.ok(cargos);
     }
 
-    @GetMapping("/departamento/{idDepartamento}")
+    @GetMapping("/cargos/departamento/{idDepartamento}")
     ResponseEntity<List<CargoEntity>> getByDepartamentoId(@PathVariable Long idDepartamento){
         List<CargoEntity> cargos = cargoService.geByDepartamentoId(idDepartamento);
         return new ResponseEntity<>(cargos, HttpStatus.FOUND);
@@ -35,7 +35,7 @@ public class CargoController {
     @GetMapping("/cargos/{id}")
     ResponseEntity<CargoEntity> getCargoById(@PathVariable Long id) {
         CargoEntity cargo = cargoService.getById(id);
-        return new ResponseEntity<>(cargo, HttpStatus.FOUND);
+        return ResponseEntity.ok(cargo);
     }
 
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Creado exitosamente")

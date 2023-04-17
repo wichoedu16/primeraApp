@@ -22,7 +22,7 @@ public class EmpleadoEntity {
     @Column(name = "usuario", nullable = false)
     private String usuario;
 
-    @Column(name = "estado", length = 15, nullable = false)
+    @Column(name = "estado", length = 1, nullable = false)
     private String estado;
 
     @Column(name = "nombre", length = 60, nullable = false)
@@ -37,16 +37,16 @@ public class EmpleadoEntity {
     @Column(name = "fecha_nacimiento")
     private LocalDateTime fechaNacimiento;
 
-    @Column(name = "sexo", length = 15, nullable = false)
+    @Column(name = "sexo", length = 1, nullable = false)
     private String sexo;
 
     @Column(name = "nacionalidad", length = 15, nullable = false)
     private String nacionalidad;
 
-    @Column(name = "estado_civil", length = 15, nullable = false)
+    @Column(name = "estado_civil", nullable = false)
     private String estadoCivil;
 
-    @Column(name = "fecha_ingreso")
+    @Column(name = "fecha_ingreso", nullable = false)
     private LocalDateTime fechaIngreso;
 
     @Column(name = "fecha_salida")
@@ -64,20 +64,11 @@ public class EmpleadoEntity {
     @Column(name = "titulo")
     private String titulo;
 
-    @Column(name = "id_salario")
-    private Long idSalario;
-
-    @Column(name = "jefe")
-    private String jefe;
-
-    @Column(name = "id_jefe")
-    private Long idJefe;
+    @Column(name = "salario")
+    private Double salario;
 
     @Column(name = "provincia", nullable = false)
     private String provincia;
-
-    @Column(name = "canton", nullable = false)
-    private String canton;
 
     @Column(name = "ciudad", nullable = false)
     private String ciudad;
@@ -85,10 +76,10 @@ public class EmpleadoEntity {
     @Column(name = "sector", nullable = false)
     private String sector;
 
-    @Column(name = "telefono")
+    @Column(name = "telefono", length = 10)
     private String telefono;
 
-    @Column(name = "celular")
+    @Column(name = "celular", length = 10)
     private String celular;
 
     @Column(name = "calle_principal", nullable = false)
@@ -100,7 +91,7 @@ public class EmpleadoEntity {
     @Column(name = "correo_personal")
     private String correoPersonal;
 
-    @Column(name = "correo_institucional", nullable = false)
+    @Column(name = "correo_institucional")
     private String correoInstitucional;
 
     @Column(name = "fecha_creacion", nullable = false)

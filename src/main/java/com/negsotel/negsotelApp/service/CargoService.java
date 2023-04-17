@@ -24,8 +24,8 @@ public class CargoService  {
     @Autowired
     private DepartamentoService departamentoService;
 
-    public Page<CargoEntity> getAll(Pageable pageable) {
-        return cargoRepository.findAll(pageable);
+    public List<CargoEntity> getAll() {
+        return cargoRepository.findAll();
     }
 
     public CargoEntity getById(Long id) {
@@ -55,15 +55,21 @@ public class CargoService  {
 
     public CargoEntity updateCargo(Long id, CargoEntity cargo) {
         Optional<CargoEntity> cargoEncontrado = cargoRepository.findById(id);
-        if (cargoEncontrado.isPresent()){
-            cargoEncontrado.get().setDescripcion(cargo.getDescripcion());
-            cargoEncontrado.get().setCodigo(cargo.getCodigo());
-            cargoEncontrado.get().setSalario(cargo.getSalario());
-            cargoEncontrado.get().setDepartamentoId(cargo.getDepartamentoId());
-            return cargoRepository.save(cargoEncontrado.get());
-        }
-        else {
-            throw new EntityNotFoundException("No se encontró el cargo con ID " + cargo.getId());
+        Optional<DepartamentoEntity> departamento = departamentoService.getDepartamentoById(cargo.getDepartamentoId());
+        if (departamento.isPresent()){
+            if (cargoEncontrado.isPresent()){
+                cargoEncontrado.get().setFechaModifica(LocalDateTime.now());
+                cargoEncontrado.get().setDepartamento(departamento.get());
+                cargoEncontrado.get().setDescripcion(cargo.getDescripcion());
+                cargoEncontrado.get().setCodigo(cargo.getCodigo());
+                cargoEncontrado.get().setSalario(cargo.getSalario());
+                cargoEncontrado.get().setDepartamentoId(cargo.getDepartamentoId());
+                return cargoRepository.save(cargoEncontrado.get());
+            } else {
+                throw new EntityNotFoundException("No se encontró el cargo con ID " + cargo.getId());
+            }
+        } else {
+            throw new EntityNotFoundException("No se encontró el departamento con ID " + cargo.getDepartamentoId());
         }
     }
 

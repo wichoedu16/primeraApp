@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class AnticipoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "anticipo-sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "anticipo-sequence")
     private Long id;
     private @Column(nullable = false)
     String motivo;
@@ -25,10 +25,12 @@ public class AnticipoEntity {
     @Column(unique = true, nullable = false)
     private Double monto;
     private LocalDateTime fechaPedido;
+    private LocalDateTime fechaEntrega;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModifica;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "empleado_id", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "empleado_id")
     private EmpleadoEntity empleado;
-
+    @Column(name = "empleado_id", insertable = false, updatable = false)
+    private Long empleadoId;
 }
