@@ -80,7 +80,6 @@ public class CargoService  {
         }else {
             throw new EntityNotFoundException("No se encontró el cargo con ID " + id);
         }
-
     }
 
     private void validarCodigoCargo(String codigo) {

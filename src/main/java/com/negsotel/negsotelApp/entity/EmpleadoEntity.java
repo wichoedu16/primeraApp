@@ -1,9 +1,11 @@
 package com.negsotel.negsotelApp.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,7 +15,7 @@ import java.time.LocalDateTime;
 public class EmpleadoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "empleado-sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "empleado-sequence")
     private Long id;
 
     @Column(name = "cedula", nullable = false, unique = true)
@@ -35,7 +37,8 @@ public class EmpleadoEntity {
     private String apellidoMaterno;
 
     @Column(name = "fecha_nacimiento")
-    private LocalDateTime fechaNacimiento;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate fechaNacimiento;
 
     @Column(name = "sexo", length = 1, nullable = false)
     private String sexo;
@@ -47,16 +50,14 @@ public class EmpleadoEntity {
     private String estadoCivil;
 
     @Column(name = "fecha_ingreso", nullable = false)
-    private LocalDateTime fechaIngreso;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate fechaIngreso;
 
     @Column(name = "fecha_salida")
-    private LocalDateTime fechaSalida;
+    private LocalDate fechaSalida;
 
     @Column(name = "fecha_reingreso")
-    private LocalDateTime fechaReingreso;
-
-    @Column(name = "id_cargo", nullable = false)
-    private Long idCargo;
+    private LocalDate fechaReingreso;
 
     @Column(name = "grado_academico")
     private String gradoAcademico;
@@ -67,21 +68,14 @@ public class EmpleadoEntity {
     @Column(name = "salario")
     private Double salario;
 
-    @Column(name = "provincia", nullable = false)
-    private String provincia;
-
-    @Column(name = "ciudad", nullable = false)
-    private String ciudad;
-
-    @Column(name = "sector", nullable = false)
-    private String sector;
-
     @Column(name = "telefono", length = 10)
     private String telefono;
 
     @Column(name = "celular", length = 10)
     private String celular;
 
+    @Column(name = "provincia_id")
+    private Long provinciaId;
     @Column(name = "calle_principal", nullable = false)
     private String callePrincipal;
 
@@ -94,10 +88,18 @@ public class EmpleadoEntity {
     @Column(name = "correo_institucional")
     private String correoInstitucional;
 
-    @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
-    @ManyToOne
-    @JoinColumn(name = "cargo_id", insertable = false, updatable = false)
-    private CargoEntity cargo;
+    private LocalDateTime fechaModifica;
 
+    @ManyToOne
+    @JoinColumn(name = "cargo_id")
+    private CargoEntity cargo;
+    @Column(name = "cargo_id", insertable = false, updatable = false)
+    private Long cargoId;
+
+    @ManyToOne
+    @JoinColumn(name = "codigo_ciudad")
+    private CiudadEntity ciudad;
+    @Column(name = "codigo_ciudad", insertable = false, updatable = false)
+    private Long ciudadId;
 }

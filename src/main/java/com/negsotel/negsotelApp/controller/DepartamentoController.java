@@ -25,7 +25,7 @@ public class DepartamentoController {
     @GetMapping("")
     public ResponseEntity<List<DepartamentoEntity>> getAll() {
         List<DepartamentoEntity> departamentos = departamentoService.getAll();
-        return ResponseEntity.ok(departamentos);
+        return new ResponseEntity<>(departamentos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

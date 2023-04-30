@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name="departamento")
 public class DepartamentoEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "departamento-sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "departamento-sequence")
     private Long id;
     @NonNull
     private String descripcion;

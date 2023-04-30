@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class AnticipoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "anticipo-sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "anticipo-sequence")
     private Long id;
     private @Column(nullable = false)
     String motivo;
