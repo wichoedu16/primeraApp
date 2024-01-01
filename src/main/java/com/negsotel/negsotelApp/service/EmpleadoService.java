@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -35,20 +36,22 @@ public class EmpleadoService {
 
     public EmpleadoEntity createEmpleado(EmpleadoEntity empleado) {
         CargoEntity cargoEncontrado = validarCargo(empleado.getCargoId());
-        CiudadEntity ciudadEncontrada = validarCiudad(empleado.getCiudadId());
         empleado.setCargo(cargoEncontrado);
-        empleado.setCiudad(ciudadEncontrada);
         empleado.setSalario(cargoEncontrado.getSalario());
-        empleado.setFechaCreacion(LocalDateTime.now());
         return empleadoRepository.save(empleado);
     }
-
     private CargoEntity validarCargo(Long cargoId) {
         return cargoService.getById(cargoId);
-    }
 
-    private CiudadEntity validarCiudad(Long ciudadId) {
-        return ciudadService.getById(ciudadId);
+    }
+    private CiudadEntity validarCiudad(Long ciudadId, Long provinciaId) {
+        return ciudadService.getByCodigoCiudadAndProvincia(ciudadId, provinciaId);
+    }
+    private boolean existeCargo(Long cargoId) {
+        CargoEntity cargo = cargoService.getById(cargoId);
+        if(Objects.nonNull(cargo))
+            return true;
+        return false;
     }
 
     public EmpleadoEntity updateEmpleado(Long id, EmpleadoEntity empleado) {

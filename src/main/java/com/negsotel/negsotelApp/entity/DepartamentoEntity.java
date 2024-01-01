@@ -13,17 +13,16 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @Table(name="departamento")
 public class DepartamentoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "departamento-sequence")
     private Long id;
-    @NonNull
+    @Column(unique = true, nullable = false)
     private String descripcion;
     @Column(unique = true, nullable = false)
     private String codigo;
-    private LocalDateTime fechaCreacion;
-    private LocalDateTime fechaModifica;
-
+    @Column(nullable = false)
+    private String estado;
 }

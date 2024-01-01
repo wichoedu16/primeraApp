@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 @Table(name="ciudad")
 public class CiudadEntity {
@@ -16,7 +16,8 @@ public class CiudadEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long codigo_ciudad;
+    @Column(name = "codigo")
+    private Long codigo;
     @NonNull
     private String descripcion;
     @ManyToOne

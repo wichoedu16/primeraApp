@@ -54,9 +54,11 @@ public class EmpleadoEntity {
     private LocalDate fechaIngreso;
 
     @Column(name = "fecha_salida")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fechaSalida;
 
     @Column(name = "fecha_reingreso")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fechaReingreso;
 
     @Column(name = "grado_academico")
@@ -74,8 +76,6 @@ public class EmpleadoEntity {
     @Column(name = "celular", length = 10)
     private String celular;
 
-    @Column(name = "provincia_id")
-    private Long provinciaId;
     @Column(name = "calle_principal", nullable = false)
     private String callePrincipal;
 
@@ -88,18 +88,9 @@ public class EmpleadoEntity {
     @Column(name = "correo_institucional")
     private String correoInstitucional;
 
-    private LocalDateTime fechaCreacion;
-    private LocalDateTime fechaModifica;
-
     @ManyToOne
     @JoinColumn(name = "cargo_id")
     private CargoEntity cargo;
     @Column(name = "cargo_id", insertable = false, updatable = false)
     private Long cargoId;
-
-    @ManyToOne
-    @JoinColumn(name = "codigo_ciudad")
-    private CiudadEntity ciudad;
-    @Column(name = "codigo_ciudad", insertable = false, updatable = false)
-    private Long ciudadId;
 }

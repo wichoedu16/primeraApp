@@ -1,5 +1,6 @@
 package com.negsotel.negsotelApp.controller;
 
+import com.negsotel.negsotelApp.controller.dto.AnticipoDTO;
 import com.negsotel.negsotelApp.entity.AnticipoEntity;
 import com.negsotel.negsotelApp.entity.CargoEntity;
 import com.negsotel.negsotelApp.repository.AnticipoRepository;
@@ -26,22 +27,16 @@ public class AnticipoController {
         return new ResponseEntity<>(anticipos, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity<AnticipoEntity> getCargoById(@PathVariable Long id) {
-        AnticipoEntity anticipo = anticipoService.getById(id);
-        return ResponseEntity.ok(anticipo);
-    }
-
     @GetMapping("/empleado/{idEmpleado}")
-    ResponseEntity<List<AnticipoEntity>> getAllByEmpleadoId(@PathVariable Long idEmpleado){
-        List<AnticipoEntity> anticipos = anticipoService.getAllByEmpleadoId(idEmpleado);
+    ResponseEntity<List<AnticipoDTO>> getAllByEmpleadoId(@PathVariable Long idEmpleado){
+        List<AnticipoDTO> anticipos = anticipoService.getAllByEmpleadoId(idEmpleado);
         return new ResponseEntity<>(anticipos, HttpStatus.FOUND);
     }
 
     @ResponseStatus(value = HttpStatus.CREATED, reason = "Creado exitosamente")
     @PostMapping("")
-    public ResponseEntity<AnticipoEntity> crearAnticipo(@RequestBody AnticipoEntity anticipo) {
-        AnticipoEntity anticipoNuevo = anticipoService.createCargo(anticipo);
+    public ResponseEntity<AnticipoEntity> createAnticipo(@RequestBody AnticipoEntity anticipo) {
+        AnticipoEntity anticipoNuevo = anticipoService.create(anticipo);
         return ResponseEntity.status(HttpStatus.CREATED).body(anticipoNuevo);
     }
 

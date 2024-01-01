@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 @Table(name="cargo")
 public class CargoEntity {
@@ -26,8 +26,7 @@ public class CargoEntity {
     private String codigo;
     @NonNull
     private Double salario;
-    private LocalDateTime fechaCreacion;
-    private LocalDateTime fechaModifica;
+
     @ManyToOne
     @JoinColumn(name = "departamento_id")
     private DepartamentoEntity departamento;

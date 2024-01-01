@@ -46,14 +46,12 @@ public class DepartamentoService {
     }
     public DepartamentoEntity createDepartamento(DepartamentoEntity departamento) {
         validarCodigoDepartamento(departamento.getCodigo());
-        departamento.setFechaCreacion(LocalDateTime.now());
         return departamentoRepository.save(departamento);
     }
 
     public DepartamentoEntity updateDepartamento(Long id, DepartamentoEntity departamento) {
         Optional<DepartamentoEntity> departamentoEncontrado = getDepartamentoById(id);
         if (departamentoEncontrado.isPresent()) {
-            departamentoEncontrado.get().setFechaModifica(LocalDateTime.now());
             departamentoEncontrado.get().setDescripcion(departamento.getDescripcion());
             departamentoEncontrado.get().setCodigo(departamento.getCodigo());
             return departamentoRepository.save(departamentoEncontrado.get());

@@ -11,26 +11,32 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/ciudad-admin/ciudades")
+@RequestMapping("/ciudad-admin")
 public class CiudadController {
 
     @Autowired
     private CiudadService ciudadService;
 
-    @GetMapping("")
+    @GetMapping("/ciudades")
     public ResponseEntity<List<CiudadEntity>> getAll() {
         List<CiudadEntity> ciudades = ciudadService.getAll();
         return ResponseEntity.ok(ciudades);
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity<CiudadEntity> getById(@PathVariable Long id){
-        CiudadEntity ciudad = ciudadService.getById(id);
+    @GetMapping("/ciudad/{codigoCiudad}")
+    ResponseEntity<CiudadEntity> getByCodigoCiduad(@PathVariable Long codigoCiudad){
+        CiudadEntity ciudad = ciudadService.getByCodigo(codigoCiudad);
+        return ResponseEntity.ok(ciudad);
+    }
+
+    @GetMapping("/{codigoCiudad}/provincia/{provinciaId}")
+    ResponseEntity<CiudadEntity> getById(@PathVariable Long provinciaId, Long codigoCiudad){
+        CiudadEntity ciudad = ciudadService.getByIds(provinciaId, codigoCiudad);
         return ResponseEntity.ok(ciudad);
     }
     @GetMapping("/provincia/{provinciaId}")
     ResponseEntity<List<CiudadEntity>> getByProvinciaId(@PathVariable Long provinciaId){
         List<CiudadEntity> ciudades = ciudadService.geByProvinciaId(provinciaId);
-        return new ResponseEntity<>(ciudades, HttpStatus.FOUND);
+        return ResponseEntity.ok(ciudades);
     }
 }

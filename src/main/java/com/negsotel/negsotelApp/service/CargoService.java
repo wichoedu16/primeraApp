@@ -46,7 +46,6 @@ public class CargoService  {
         if (departamento.isPresent()){
             validarCodigoCargo(cargo.getCodigo());
             cargo.setDepartamento(departamento.get());
-            cargo.setFechaCreacion(LocalDateTime.now());
             return cargoRepository.save(cargo);
         }else {
             throw new EntityNotFoundException("No se encontró el departamento con ID " + cargo.getDepartamentoId());
@@ -58,7 +57,6 @@ public class CargoService  {
         Optional<DepartamentoEntity> departamento = departamentoService.getDepartamentoById(cargo.getDepartamentoId());
         if (departamento.isPresent()){
             if (cargoEncontrado.isPresent()){
-                cargoEncontrado.get().setFechaModifica(LocalDateTime.now());
                 cargoEncontrado.get().setDepartamento(departamento.get());
                 cargoEncontrado.get().setDescripcion(cargo.getDescripcion());
                 cargoEncontrado.get().setCodigo(cargo.getCodigo());

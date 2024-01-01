@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CiudadRepository extends JpaRepository<CiudadEntity, Long> {
     List<CiudadEntity> findByProvinciaId(Long idProvincia);
+    CiudadEntity findByCodigo(Long codigoCiudad);
+    CiudadEntity findByProvinciaIdAndCodigo(Long provinciaId, Long ciudadId);
 }

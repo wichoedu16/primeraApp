@@ -1,5 +1,6 @@
 package com.negsotel.negsotelApp.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,16 +20,16 @@ public class AnticipoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "anticipo-sequence")
     private Long id;
-    private @Column(nullable = false)
     String motivo;
     private @Column(nullable = false)
     String estado;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private Double monto;
-    private LocalDateTime fechaPedido;
-    private LocalDateTime fechaEntrega;
-    private LocalDateTime fechaCreacion;
-    private LocalDateTime fechaModifica;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate fechaPedido;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate fechaEntrega;
+
     @ManyToOne
     @JoinColumn(name = "empleado_id")
     private EmpleadoEntity empleado;
